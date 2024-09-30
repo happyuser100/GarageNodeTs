@@ -1,6 +1,5 @@
 import { Router } from "express";
 import HomeController from "../controllers/home.controller";
-//import { welcome } from "../controllers/home.controller";
 
 class HomeRoutes {
   router = Router();
