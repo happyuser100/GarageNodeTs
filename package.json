@@ -7,7 +7,7 @@
     "build": "tsc",
     "eslint": "eslint src/server.ts",
     "dev": "nodemon src/server.ts",
-    "start": "node build/src/server.js",
+    "start": "node ./build/server.js",
     "dev1": "node ./build/server.js",
     "devNode": "ts-node-dev --respawn src/server.ts",
     "start1": "tsc && nodemon build/server.js",

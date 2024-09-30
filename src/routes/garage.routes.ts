@@ -13,8 +13,9 @@ class GarageRoutes {
     // Create a new Garage
     this.router.post("/", this.controller.create);
 
-    // Retrieve all Garages
-    this.router.get("/", this.controller.findAll);
+    // Retrieve all Garages    
+    this.router.get("/", this.controller.getAllGarages);
+    //this.router.get("/", this.controller.findAll);
 
     // Retrieve a single Garage with id
     this.router.get("/:id", this.controller.findOne);
@@ -30,23 +31,23 @@ class GarageRoutes {
 export default new GarageRoutes().router;
 
 
-const express = require("express");
-const {
-  getAllAPIGarages,  
-  createAllGarages,
-  getAllGarages,
-  createGarage,
-  getGarageById,
-  updateGarage,
-  deleteGarage,
-} = require("../controllers/GarageController");
+// const express = require("express");
+// const {
+//   getAllAPIGarages,  
+//   createAllGarages,
+//   getAllGarages,
+//   createGarage,
+//   getGarageById,
+//   updateGarage,
+//   deleteGarage,
+// } = require("../controllers/GarageController");
 
-const router = express.Router();
+// const router = express.Router();
 
-router.route("/").get(getAllAPIGarages);
-router.route("/").post(createAllGarages);
-router.route("/getAllGarages").get(getAllGarages)
-router.route("/createGarage").post(createGarage);
-router.route("/:id").get(getGarageById).put(updateGarage).delete(deleteGarage);
+// router.route("/").get(getAllAPIGarages);
+// router.route("/").post(createAllGarages);
+// router.route("/getAllGarages").get(getAllGarages)
+// router.route("/createGarage").post(createGarage);
+// router.route("/:id").get(getGarageById).put(updateGarage).delete(deleteGarage);
 
-module.exports = router;
+// module.exports = router;
