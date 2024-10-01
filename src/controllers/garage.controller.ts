@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import GarageItem from "../models/GarageItem";
+import axios from "axios";
 import { IGarageItem } from "../types/IGarageItem";
+import Utils from "../utils/garageUtils";
 
 export default class GarageController {
 
@@ -28,29 +30,24 @@ export default class GarageController {
         };
     }
 
+    async createAllGarages(req: Request, res: Response, next: NextFunction) {
+        const url = "https://data.gov.il/api/3/action/datastore_search?resource_id=bb68386a-a331-4bbc-b668-bba2766d517d&limit=5"
+        const garages = await axios(url);
+        const records = garages.data.result.records;
+
+        await Promise.all(records.map(async (garage: IGarageItem) => {
+            await new Utils().addGarageItem(garage);
+        }));
+
+        res.status(201).json({
+            message: "create OK"
+        });    
+    }
+
     async createGarage(req: Request, res: Response, next: NextFunction) {
         try {
             const garageItem = req.body;
-
-            //const newGarage = await addGarageItem(garageItem);
-            const garage = new GarageItem({
-                _id: garageItem._id,
-                mispar_mosah: garageItem.mispar_mosah,
-                shem_mosah: garageItem.shem_mosah,
-                cod_sug_mosah: garageItem.cod_sug_mosah,
-                sug_mosah: garageItem.sug_mosah,
-                ktovet: garageItem.ktovet,
-                yishuv: garageItem.yishuv,
-                telephone: garageItem.telephone,
-                mikud: garageItem.mikud,
-                cod_miktzoa: garageItem.cod_miktzoa,
-                miktzoa: garageItem.miktzoa,
-                menahel_miktzoa: garageItem.menahel_miktzoa,
-                rasham_havarot: garageItem.rasham_havarot,
-                TESTIME: garageItem.TESTIME
-            });
-
-            const newGarage = await garage.save();
+            const newGarage = await new Utils().addGarageItem(garageItem);
             if (newGarage) {
                 res.status(201).json({
                     newGarage,
@@ -67,36 +64,6 @@ export default class GarageController {
             next(error);
         }
     };
-
-
-    async addGarageItem(garageItem: IGarageItem) {
-        try {
-            const garage = new GarageItem({
-                _id: garageItem._id,
-                mispar_mosah: garageItem.mispar_mosah,
-                shem_mosah: garageItem.shem_mosah,
-                cod_sug_mosah: garageItem.cod_sug_mosah,
-                sug_mosah: garageItem.sug_mosah,
-                ktovet: garageItem.ktovet,
-                yishuv: garageItem.yishuv,
-                telephone: garageItem.telephone,
-                mikud: garageItem.mikud,
-                cod_miktzoa: garageItem.cod_miktzoa,
-                miktzoa: garageItem.miktzoa,
-                menahel_miktzoa: garageItem.menahel_miktzoa,
-                rasham_havarot: garageItem.rasham_havarot,
-                TESTIME: garageItem.TESTIME
-            });
-
-            const savedGarage = await garage.save();
-            return savedGarage;
-
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-
 
     async create(req: Request, res: Response) {
         try {

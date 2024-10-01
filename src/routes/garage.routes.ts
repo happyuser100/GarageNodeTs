@@ -17,6 +17,8 @@ class GarageRoutes {
         // Retrieve all Garages    
         this.router.get("/", this.controller.getAllGarages);
         //this.router.get("/", this.controller.findAll);
+        
+        this.router.post("/create", this.controller.createAllGarages);
 
         // Retrieve a single Garage with id
         // this.router.get("/:id", this.controller.findOne);
