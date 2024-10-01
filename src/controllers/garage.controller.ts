@@ -3,17 +3,13 @@ import GarageItem from "../models/GarageItem";
 import axios from "axios";
 import { IGarageItem } from "../types/IGarageItem";
 import Utils from "../utils/garageUtils";
+import { URL } from "../config"
 
 export default class GarageController {
-
-    // , next: NextFunction
     async getAllGarages(req: Request, res: Response, next: NextFunction) {
         {
             try {
                 const getGarages = await GarageItem.find();
-                //.select("_id title description vote createdAt updatedAt")
-                //.populate("user", "username name surname");
-
                 if (getGarages) {
                     res.status(200).json(getGarages);
                 } else {
@@ -23,25 +19,45 @@ export default class GarageController {
                         })
                     );
                 }
-            } catch (error: any) {
-                console.log(error);
-                next(error);
+            } catch (err) {
+                console.log(err);
+                next(err);
             }
         };
     }
 
+    async getAllAPIGarages(req: Request, res: Response, next: NextFunction) {
+        try {
+            const garages = await axios(URL);
+            res.json({ data: garages.data.result.records, status: "success" });
+        }
+        catch (err) {
+            console.log(err);
+            res.status(500).json({
+                message: "Internal Server Error!"
+            });
+        }
+    }
+
     async createAllGarages(req: Request, res: Response, next: NextFunction) {
-        const url = "https://data.gov.il/api/3/action/datastore_search?resource_id=bb68386a-a331-4bbc-b668-bba2766d517d&limit=5"
-        const garages = await axios(url);
-        const records = garages.data.result.records;
+        try {
+            const garages = await axios(URL);
+            const records = garages.data.result.records;
 
-        await Promise.all(records.map(async (garage: IGarageItem) => {
-            await new Utils().addGarageItem(garage);
-        }));
+            await Promise.all(records.map(async (garage: IGarageItem) => {
+                await new Utils().addGarageItem(garage);
+            }));
 
-        res.status(201).json({
-            message: "create OK"
-        });    
+            res.status(201).json({
+                message: "create OK"
+            });
+        }
+        catch (err) {
+            console.log(err);
+            res.status(500).json({
+                message: "Internal Server Error!"
+            });
+        }
     }
 
     async createGarage(req: Request, res: Response, next: NextFunction) {
@@ -59,9 +75,9 @@ export default class GarageController {
                     })
                 );
             }
-        } catch (error) {
-            console.log(error);
-            next(error);
+        } catch (err) {
+            console.log(err);
+            next(err);
         }
     };
 

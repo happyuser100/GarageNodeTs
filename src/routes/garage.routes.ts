@@ -14,8 +14,11 @@ class GarageRoutes {
         this.router.post("/", this.controller.createGarage);
         //this.router.post("/", this.controller.create);
 
+        // Retrieve all Garages from API   
+        this.router.get("/", this.controller.getAllAPIGarages);
+
         // Retrieve all Garages    
-        this.router.get("/", this.controller.getAllGarages);
+        this.router.get("/getAllGarages", this.controller.getAllGarages);
         //this.router.get("/", this.controller.findAll);
         
         this.router.post("/create", this.controller.createAllGarages);
