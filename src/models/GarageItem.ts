@@ -58,7 +58,6 @@ const GarageItemSchema: Schema = new Schema(
       },
       TESTIME: {
         type: String,
-        required: true,
       }     
   },
   { timestamps: true }
