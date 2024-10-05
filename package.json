@@ -8,9 +8,7 @@
     "eslint": "eslint src/server.ts",
     "dev": "nodemon src/server.ts",
     "start": "node ./build/server.js",
-    "dev1": "node ./build/server.js",
     "devNode": "ts-node-dev --respawn src/server.ts",
-    "start1": "tsc && nodemon build/server.js",
     "startNode": "tsc && npm run dev"
   },
   "keywords": [],
