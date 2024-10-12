@@ -24,10 +24,10 @@ describe("test getAllAPIGarages", () => {
     expect(_id).toBe("1");
   });
 
-  test("createGarage should return _id = 8", async () => {
+  test("createGarage should return _id = 10", async () => {
     const garage =
     {
-      "_id": "8",
+      "_id": "10",
       "mispar_mosah": "43",
       "shem_mosah": "קבוץ שלום",
       "cod_sug_mosah": 6,
@@ -46,6 +46,13 @@ describe("test getAllAPIGarages", () => {
     const res = await request(app).post("/api/garage").send(garage).expect("Content-Type", /json/).expect(201);;
     const body = res.body;
     //console.log("body.data=", body.data);
-    expect(body.data._id).toBe("8");
+    expect(body.data._id).toBe("10");
+  });
+
+  test("create All Garages should return 'create OK'", async () => {
+    const res = await request(app).post("/api/garage/create").expect("Content-Type", /json/).expect(201);;
+    const body = res.body;
+    //console.log("body.message=", body.message);
+    expect(body.message).toEqual("create OK");
   });
 });  
