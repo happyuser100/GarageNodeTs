@@ -13,7 +13,7 @@ export default class Server {
 
   private config(app: Application): void {
     const corsOptions: CorsOptions = {
-      origin: "http://localhost:4200" //"http://localhost:3003"
+      origin: "http://localhost:4200" 
     };
 
     app.use(cors(corsOptions));
@@ -24,10 +24,11 @@ export default class Server {
   }
 
   //configure mongoose
-  private mongoConnect() {
+  public mongoConnect() {
     //const database = "process.env.MONGO_URL ? process.env.MONGO_URL : 'mongodb://127.0.0.1:27017/garages";
     //const database = "process.env.MONGO_URL ? process.env.MONGO_URL : 'mongodb://localhost:27017/garages";
     const database = 'mongodb://localhost:27017/garages';
+    
     const connect = async () => {
       await mongoose
         .connect(database)
@@ -37,9 +38,16 @@ export default class Server {
           return process.exit(1);
         });
     };
+
+
     connect();
     mongoose.connection.on("disconnected", () => {
       console.log(`Db disconnected`);
     });
+  }
+
+  public closeConnection()
+  {    
+    mongoose.connection.close();    
   }
 }

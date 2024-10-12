@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "eslint": "eslint src/server.ts",
     "dev": "nodemon src/server.ts",
     "start": "node ./build/server.js",
+    "test": "jest --forceExit --passWithNoTests --no-cache",
+    "test:debug": "npm test -- --watch",
     "devNode": "ts-node-dev --respawn src/server.ts",
     "startNode": "tsc && npm run dev"
   },
@@ -28,5 +29,12 @@
     "nodemon": "^3.1.7",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.6.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.13",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5"
   }
 }

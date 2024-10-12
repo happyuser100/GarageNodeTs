@@ -5,6 +5,7 @@ import { IGarageItem } from "../types/IGarageItem";
 import Utils from "../utils/garageUtils";
 import { URL } from "../config"
 
+
 export default class GarageController {
     async getAllGarages(req: Request, res: Response, next: NextFunction) {
         {
@@ -29,7 +30,7 @@ export default class GarageController {
     async getAllAPIGarages(req: Request, res: Response, next: NextFunction) {
         try {
             const garages = await axios(URL);
-            res.json({ data: garages.data.result.records, status: "success" });
+            res.status(200).json({ data: garages.data.result.records, status: "success" });
         }
         catch (err) {
             console.log(err);
@@ -44,8 +45,13 @@ export default class GarageController {
             const garages = await axios(URL);
             const records = garages.data.result.records;
 
+            //get all garrages
+            const getGarages = await GarageItem.find();
+
             await Promise.all(records.map(async (garage: IGarageItem) => {
-                await new Utils().addGarageItem(garage);
+                const ind = getGarages.findIndex(x => x._id === garage._id);
+                if (ind === -1)
+                    await new Utils().addGarageItem(garage);
             }));
 
             res.status(201).json({
@@ -66,7 +72,7 @@ export default class GarageController {
             const newGarage = await new Utils().addGarageItem(garageItem);
             if (newGarage) {
                 res.status(201).json({
-                    newGarage,
+                    data: newGarage,
                 });
             } else {
                 return next(
